@@ -1,14 +1,13 @@
 <div style="width: 400px; margin: auto;">
+  <form [formGroup]="commandForm" (ngSubmit)="saveCommand()">
     <div class="submit-form">
         <div class="form-group">
           <label for="How to">How To</label>
           <input
             type="text"
             class="form-control"
-            id="howTo"
-            required
-            [(ngModel)]="command.howTo"
             name="howTo"
+            formControlName="howTo"
           />
         </div>
   
@@ -16,10 +15,8 @@
           <label for="line">Line</label>
           <input
             class="form-control"
-            id="line"
-            required
-            [(ngModel)]="command.line"
             name="line"
+            formControlName="line"
           />
         </div>
 
@@ -27,15 +24,13 @@
             <label for="plataform">Plataform</label>
             <input
               class="form-control"
-              id="plataform"
-              required
-              [(ngModel)]="command.plataform"
               name="line"
+              formControlName="plataform"
             />
         </div>
 
-        <button (click)="saveCommand()" class="btn btn-success">Submit</button>
-
+        <button type="submit" class="btn btn-success">Submit</button>
     </div>
+  </form>
 </div>
   

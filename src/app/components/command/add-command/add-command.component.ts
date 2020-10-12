@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommandService } from 'src/app/services/command.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Command } from '../models/command';
 
 @Component({
   selector: 'app-add-command',
@@ -8,12 +10,11 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./add-command.component.css']
 })
 export class AddCommandComponent implements OnInit {
-
-  command = {
-    howTo: '',
-    line: '',
-    plataform: ''
-  };
+  commandForm = new FormGroup({
+    howTo: new FormControl('', Validators.required),
+    line: new FormControl('', Validators.required),
+    plataform: new FormControl('', Validators.required)
+  });
 
   constructor(
     private commandService: CommandService,
@@ -24,11 +25,10 @@ export class AddCommandComponent implements OnInit {
   }
   
   saveCommand(): void {
-    const data = {
-      howTo: this.command.howTo,
-      line: this.command.line,
-      plataform: this.command.plataform
-    };
+    var data = new Command();
+    data.howTo = this.commandForm.get('howTo').value;
+    data.line = this.commandForm.get('line').value;
+    data.plataform = this.commandForm.get('plataform').value;
 
     this.commandService.create(data)
       .subscribe(
@@ -39,13 +39,5 @@ export class AddCommandComponent implements OnInit {
         error => {
           console.log(error);
         });
-  }
-
-  newCommand(): void {
-    this.command = {
-      howTo: '',
-      line: '',
-      plataform: ''
-    };
   }
 }

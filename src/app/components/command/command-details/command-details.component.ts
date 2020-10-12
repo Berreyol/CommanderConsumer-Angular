@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommandService } from 'src/app/services/command.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Command } from '../models/command';
 
 @Component({
   selector: 'app-command-details',
@@ -8,9 +10,13 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./command-details.component.css']
 })
 export class CommandDetailsComponent implements OnInit {
+  commandForm = new FormGroup({
+    howTo: new FormControl('', Validators.required),
+    line: new FormControl('', Validators.required),
+    plataform: new FormControl('', Validators.required)
+  });
 
-  currentCommand = null;
-  message = '';
+  currentCommandId: string;
 
   constructor(
     private commandService: CommandService,
@@ -19,15 +25,23 @@ export class CommandDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.message = '';
-    this.getCommand(this.route.snapshot.paramMap.get('id'));
+    const id = this.route.snapshot.paramMap.get('id')
+    this.getCommand(id);
+    this.currentCommandId = id;
+
   }
 
   getCommand(id): void {
     this.commandService.get(id)
       .subscribe(
-        data => {
-          this.currentCommand = data;
+        res => {
+          const commandRes = <Command> res
+          this.commandForm.patchValue({
+            howTo: commandRes.howTo,
+            line: commandRes.line,
+            // is_active: this.requirement_type_obj.is_active,
+            plataform: commandRes.plataform,
+          });
         },
         error => {
           console.log(error);
@@ -35,7 +49,12 @@ export class CommandDetailsComponent implements OnInit {
   }
 
   updateCommand(): void {
-    this.commandService.update(this.currentCommand.id, this.currentCommand)
+    var command = new Command();
+    command.howTo = this.commandForm.get('howTo').value;
+    command.line = this.commandForm.get('line').value;
+    command.plataform = this.commandForm.get('plataform').value;
+
+    this.commandService.update(this.currentCommandId, command)
       .subscribe(
         response => {
           console.log(response);
@@ -50,7 +69,7 @@ export class CommandDetailsComponent implements OnInit {
   }
 
   deleteCommand(): void {
-    this.commandService.delete(this.currentCommand.id)
+    this.commandService.delete(this.currentCommandId)
       .subscribe(
         response => {
           console.log(response);

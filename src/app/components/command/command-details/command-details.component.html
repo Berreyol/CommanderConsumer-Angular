@@ -1,15 +1,14 @@
 <div style="width: 400px; margin: auto;">
-    <div *ngIf="currentCommand" class="edit-form">
+    <div class="edit-form">
       <h4>Command</h4>
-      <form>
+      <form [formGroup]="commandForm" (ngSubmit)="updateCommand()">
         <div class="form-group">
           <label for="how to">How to</label>
           <input
             type="text"
             class="form-control"
-            id="howTo"
-            [(ngModel)]="currentCommand.howTo"
             name="howTo"
+            formControlName="howTo"
           />
         </div>
         <div class="form-group">
@@ -17,9 +16,8 @@
           <input
             type="text"
             class="form-control"
-            id="line"
-            [(ngModel)]="currentCommand.line"
             name="line"
+            formControlName="line"
           />
         </div>
   
@@ -28,30 +26,15 @@
           <input
             type="text"
             class="form-control"
-            id="plataform"
-            [(ngModel)]="currentCommand.plataform"
             name="plataform"
+            formControlName="plataform"
           />
         </div>
+        <button type="button" class="btn btn-danger mr-2" (click)="deleteCommand()">Delete</button>
+        <button type="submit" [disabled]="!commandForm.valid" class="btn btn-success">Update </button>
       </form>
   
-      <button class="badge badge-danger mr-2" (click)="deleteCommand()">
-        Delete
-      </button>
-  
-      <button
-        type="submit"
-        class="badge badge-success"
-        (click)="updateCommand()"
-      >
-        Update
-      </button>
-      <p>{{ message }}</p>
     </div>
-  
-    <div *ngIf="!currentCommand">
-      <br />
-      <p>Cannot access this Command...</p>
-    </div>
+
   </div>
   
