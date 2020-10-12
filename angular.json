@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "command-client"
+    }
+  },
+  "defaultProject": "command-client",
+  "cli": {
+    "analytics": "ffcb0cc4-3893-4760-8380-79dfad7b68d2"
+  }
 }

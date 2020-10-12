@@ -1,0 +1,42 @@
+<div class="list row">
+    <div class="col-md-6">
+      <h4>Command List</h4>
+      <ul class="list-group">
+        <li
+          class="list-group-item"
+          *ngFor="let command of commands; let i = index"
+          [class.active]="i == currentIndex"
+          (click)="setActiveCommand(command, i)"
+        >
+          {{ command.howTo }}
+        </li>
+      </ul>
+
+    </div>
+    <div class="col-md-6">
+      <div *ngIf="currentCommand">
+        <h4>Command</h4>
+        <div>
+          <label><strong>How To:</strong></label> {{ currentCommand.howTo }}
+        </div>
+        <div>
+          <label><strong>Line:</strong></label>
+          {{ currentCommand.Line }}
+        </div>
+        <div>
+          <label><strong>Plataform:</strong></label>
+          {{ currentCommand.plataform }}
+        </div>
+  
+        <a class="badge badge-warning" routerLink="/commands/{{ currentCommand.id }}">
+          Edit
+        </a>
+      </div>
+  
+      <div *ngIf="!currentCommand">
+        <br />
+        <p>Please click on a Command...</p>
+      </div>
+    </div>
+  </div>
+  
